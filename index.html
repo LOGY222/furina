@@ -5,15 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Menu đổi icon</title>
     <style>
+      /* Loader đen toàn màn hình */
+      #loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index: 9999;
+      }
+
       body {
         margin: 0;
         padding: 0;
+        background-color: black; /* Nền đen khi chưa load ảnh */
         background-image: url("helo.png");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         height: 100vh;
         font-family: sans-serif;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+      }
+
+      img {
+        user-drag: none;
+        -webkit-user-drag: none;
+        /* pointer-events: none; bỏ đi hoặc để cho tất cả ảnh khác nếu muốn */
       }
 
       .menu-container {
@@ -38,6 +60,7 @@
         height: 40px;
         border-radius: 50%;
         object-fit: cover;
+        pointer-events: auto; /* Thêm dòng này */
       }
 
       .menu-content {
@@ -74,7 +97,14 @@
       }
     </style>
   </head>
-  <body>
+  <body
+    oncontextmenu="return false"
+    onselectstart="return false"
+    ondragstart="return false"
+  >
+    <!-- Loader đen xuất hiện khi tải -->
+    <div id="loader"></div>
+
     <div class="menu-container">
       <div class="menu-icon" id="hamburger" onclick="toggleMenu()">&#9776;</div>
       <img
@@ -99,12 +129,38 @@
         const hamburger = document.getElementById("hamburger");
         const menu = document.getElementById("menu");
 
-        const isOpen = menu.style.display === "block";
+        const hamburgerVisible =
+          window.getComputedStyle(hamburger).display !== "none";
 
-        menu.style.display = isOpen ? "none" : "block";
-        icon.style.display = isOpen ? "none" : "block";
-        hamburger.style.display = isOpen ? "block" : "none";
+        if (hamburgerVisible) {
+          // Ấn dấu 3 gạch: ẩn hamburger, hiện icon + menu
+          hamburger.style.display = "none";
+          icon.style.display = "block";
+          menu.style.display = "block";
+        } else {
+          // Ấn icon: ẩn icon + menu, hiện lại hamburger
+          hamburger.style.display = "block";
+          icon.style.display = "none";
+          menu.style.display = "none";
+        }
       }
+
+      // Ngăn Ctrl+U, Ctrl+S, Ctrl+C, Ctrl+Shift+I, F12
+      document.addEventListener("keydown", function (e) {
+        if (
+          (e.ctrlKey && ["u", "s", "c"].includes(e.key.toLowerCase())) ||
+          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") ||
+          e.key === "F12"
+        ) {
+          e.preventDefault();
+        }
+      });
+
+      // Loader biến mất khi trang tải xong
+      window.addEventListener("load", function () {
+        const loader = document.getElementById("loader");
+        loader.style.display = "none";
+      });
     </script>
   </body>
 </html>
