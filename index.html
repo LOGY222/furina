@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Menu đổi icon</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-image: url("background.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        font-family: sans-serif;
+      }
+
+      .menu-container {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+      }
+
+      .menu-icon,
+      .menu-image {
+        font-size: 30px;
+        color: white;
+        cursor: pointer;
+        user-select: none;
+        display: block;
+      }
+
+      .menu-image {
+        display: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .menu-content {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        min-width: 150px; /* đảm bảo độ rộng đều */
+      }
+
+      .menu-content ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .menu-content li {
+        margin-bottom: 10px;
+        cursor: pointer;
+        font-size: 18px;
+        padding: 10px 15px;
+        text-align: center;
+        transition: background-color 0.3s, transform 0.2s;
+        border-radius: 6px;
+      }
+
+      .menu-content li:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu-container">
+      <div class="menu-icon" id="hamburger" onclick="toggleMenu()">&#9776;</div>
+      <img
+        src="menu-bar.jpg"
+        alt="Icon"
+        class="menu-image"
+        id="icon"
+        onclick="toggleMenu()"
+      />
+      <div class="menu-content" id="menu">
+        <ul>
+          <li>Trang chủ</li>
+          <li>Tiếng Anh</li>
+          <li>Tiếng Nhật</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      function toggleMenu() {
+        const icon = document.getElementById("icon");
+        const hamburger = document.getElementById("hamburger");
+        const menu = document.getElementById("menu");
+
+        const isOpen = menu.style.display === "block";
+
+        // Toggle hiển thị
+        menu.style.display = isOpen ? "none" : "block";
+        icon.style.display = isOpen ? "none" : "block";
+        hamburger.style.display = isOpen ? "block" : "none";
+      }
+    </script>
+  </body>
+</html>
