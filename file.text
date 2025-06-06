@@ -19,8 +19,8 @@
       body {
         margin: 0;
         padding: 0;
-        background-color: black;
-        background-image: url("image/background.png");
+        background-color: black; /* Nền đen khi chưa load ảnh */
+        background-image: url("background.png");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -35,6 +35,7 @@
       img {
         user-drag: none;
         -webkit-user-drag: none;
+        /* pointer-events: none; bỏ đi hoặc để cho tất cả ảnh khác nếu muốn */
       }
 
       .menu-container {
@@ -59,7 +60,7 @@
         height: 40px;
         border-radius: 50%;
         object-fit: cover;
-        pointer-events: auto;
+        pointer-events: auto; /* Thêm dòng này */
       }
 
       .menu-content {
@@ -81,47 +82,18 @@
       }
 
       .menu-content li {
-        position: relative;
-        overflow: hidden;
         margin-bottom: 10px;
         cursor: pointer;
         font-size: 18px;
         padding: 10px 15px;
         text-align: center;
-        transition: transform 0.2s;
-        border-radius: 6px;
-        background-color: transparent;
-        z-index: 1;
-      }
-
-      .menu-content li::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: -1;
+        transition: background-color 0.3s, transform 0.2s;
         border-radius: 6px;
       }
 
-      .menu-content li:nth-child(1):hover::before {
-        background-image: url("image/home-bg.jpg");
-        opacity: 1;
-      }
-
-      .menu-content li:nth-child(2):hover::before {
-        background-image: url("image/english-bg.jpg");
-        opacity: 1;
-      }
-
-      .menu-content li:nth-child(3):hover::before {
-        background-image: url("image/japanese-bg.jpg");
-        opacity: 1;
+      .menu-content li:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
       }
     </style>
   </head>
@@ -136,7 +108,7 @@
     <div class="menu-container">
       <div class="menu-icon" id="hamburger" onclick="toggleMenu()">&#9776;</div>
       <img
-        src="image/menu-bar.jpg"
+        src="menu-bar.jpg"
         alt="Icon"
         class="menu-image"
         id="icon"
@@ -161,10 +133,12 @@
           window.getComputedStyle(hamburger).display !== "none";
 
         if (hamburgerVisible) {
+          // Ấn dấu 3 gạch: ẩn hamburger, hiện icon + menu
           hamburger.style.display = "none";
           icon.style.display = "block";
           menu.style.display = "block";
         } else {
+          // Ấn icon: ẩn icon + menu, hiện lại hamburger
           hamburger.style.display = "block";
           icon.style.display = "none";
           menu.style.display = "none";
@@ -182,6 +156,7 @@
         }
       });
 
+      // Loader biến mất khi trang tải xong
       window.addEventListener("load", function () {
         const loader = document.getElementById("loader");
         loader.style.display = "none";
