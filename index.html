@@ -123,6 +123,16 @@
         background-image: url("image/japanese-bg.jpg");
         opacity: 1;
       }
+
+      /* Vị trí meme góc dưới bên phải */
+      .furina-meme {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        width: 100px;
+        height: 100px;
+        z-index: 10000;
+      }
     </style>
   </head>
   <body
@@ -130,9 +140,10 @@
     onselectstart="return false"
     ondragstart="return false"
   >
-    <!-- Loader đen xuất hiện khi tải -->
+    <!-- Loader -->
     <div id="loader"></div>
 
+    <!-- Menu -->
     <div class="menu-container">
       <div class="menu-icon" id="hamburger" onclick="toggleMenu()">&#9776;</div>
       <img
@@ -173,7 +184,6 @@
         }
       }
 
-      // Ngăn Ctrl+U, Ctrl+S, Ctrl+C, Ctrl+Shift+I, F12
       document.addEventListener("keydown", function (e) {
         if (
           (e.ctrlKey && ["u", "s", "c"].includes(e.key.toLowerCase())) ||

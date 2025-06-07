@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Tiếng Anh</title>
     <style>
-      /* Loader đen toàn màn hình */
       #loader {
         position: fixed;
         top: 0;
@@ -115,12 +114,12 @@
       }
 
       .menu-content li:nth-child(2):hover::before {
-        background-image: url("../image/english-bg.jpg");
+        background-image: url("../image/hoc.jpg");
         opacity: 1;
       }
 
       .menu-content li:nth-child(3):hover::before {
-        background-image: url("../image/japanese-bg.jpg");
+        background-image: url("../image/luyentap.jpg");
         opacity: 1;
       }
     </style>
@@ -144,10 +143,8 @@
       <div class="menu-content" id="menu">
         <ul>
           <li onclick="window.location.href='../index.html'">Trang chủ</li>
-          <li onclick="window.location.href='english.html'">Tiếng Anh</li>
-          <li onclick="window.location.href='../japan/japan.html'">
-            Tiếng Nhật
-          </li>
+          <li onclick="window.location.href='learn.html'">Học</li>
+          <li onclick="window.location.href='practice.html'">Luyện tập</li>
         </ul>
       </div>
     </div>
@@ -172,7 +169,6 @@
         }
       }
 
-      // Ngăn tổ hợp phím developer
       document.addEventListener("keydown", function (e) {
         if (
           (e.ctrlKey && ["u", "s", "c"].includes(e.key.toLowerCase())) ||
