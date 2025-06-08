@@ -3,10 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Trang Chủ</title>
-    <link rel="icon" href="image/logo.jpg" type="image/png" />
+    <title>Học Kiến Thức</title>
     <style>
-      /* Loader đen toàn màn hình */
       #loader {
         position: fixed;
         top: 0;
@@ -21,7 +19,7 @@
         margin: 0;
         padding: 0;
         background-color: rgb(255, 255, 255);
-        background-image: url("image/backgroundindex.png");
+        background-image: url("../image/backgroundenglish.png");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -111,28 +109,13 @@
       }
 
       .menu-content li:nth-child(1):hover::before {
-        background-image: url("image/home-bg.jpg");
+        background-image: url("../image/home-bg.jpg");
         opacity: 1;
       }
 
       .menu-content li:nth-child(2):hover::before {
-        background-image: url("image/english-bg.jpg");
+        background-image: url("../image/exit.jpg");
         opacity: 1;
-      }
-
-      .menu-content li:nth-child(3):hover::before {
-        background-image: url("image/japanese-bg.jpg");
-        opacity: 1;
-      }
-
-      /* Vị trí meme góc dưới bên phải */
-      .furina-meme {
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        width: 100px;
-        height: 100px;
-        z-index: 10000;
       }
     </style>
   </head>
@@ -141,14 +124,12 @@
     onselectstart="return false"
     ondragstart="return false"
   >
-    <!-- Loader -->
     <div id="loader"></div>
 
-    <!-- Menu -->
     <div class="menu-container">
       <div class="menu-icon" id="hamburger" onclick="toggleMenu()">&#9776;</div>
       <img
-        src="image/menu-bar.jpg"
+        src="../image/menu-bar.jpg"
         alt="Icon"
         class="menu-image"
         id="icon"
@@ -156,11 +137,8 @@
       />
       <div class="menu-content" id="menu">
         <ul>
-          <li onclick="window.location.href='index.html'">Trang chủ</li>
-          <li onclick="window.location.href='english/english.html'">
-            Tiếng Anh
-          </li>
-          <li onclick="window.location.href='japan/japan.html'">Tiếng Nhật</li>
+          <li onclick="window.location.href='../index.html'">Trang chủ</li>
+          <li onclick="window.location.href='english.html'">Thoát</li>
         </ul>
       </div>
     </div>
