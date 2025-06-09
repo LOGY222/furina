@@ -125,14 +125,23 @@
         opacity: 1;
       }
 
-      /* Vị trí meme góc dưới bên phải */
+      /* Furina GIF ở góc dưới bên phải */
       .furina-meme {
         position: fixed;
         bottom: 10px;
         right: 10px;
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
         z-index: 10000;
+        pointer-events: none;
+        object-fit: contain;
+      }
+
+      @media (max-width: 600px) {
+        .furina-meme {
+          width: 60px;
+          height: 60px;
+        }
       }
     </style>
   </head>
@@ -164,6 +173,9 @@
         </ul>
       </div>
     </div>
+
+    <!-- Furina Meme GIF -->
+    <img src="image/furina.gif" alt="Furina Meme" class="furina-meme" />
 
     <script>
       function toggleMenu() {
