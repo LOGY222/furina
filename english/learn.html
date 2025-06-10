@@ -5,178 +5,132 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Học Kiến Thức</title>
     <style>
-      #loader {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgb(211, 211, 234);
-        z-index: 9999;
-      }
-
       body {
         margin: 0;
         padding: 0;
-        background-color: rgb(255, 255, 255);
-        background-image: url("../image/english_learn_background.png");
+        background-color: white;
+        background-image: url("./image/english_learn_background.png");
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat;
         height: 100vh;
         font-family: sans-serif;
         user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
       }
 
-      img {
-        user-drag: none;
-        -webkit-user-drag: none;
-      }
-
-      .menu-container {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        z-index: 1000;
-      }
-
-      .menu-icon,
-      .menu-image {
-        font-size: 30px;
-        color: white;
-        cursor: pointer;
-        user-select: none;
-        display: block;
-      }
-
-      .menu-image {
-        display: none;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-        pointer-events: auto;
-      }
-
-      .menu-content {
-        display: none;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        background-color: rgba(0, 191, 255, 0.7);
-        color: white;
-        padding: 15px;
-        border-radius: 8px;
-        min-width: 150px;
-      }
-
-      .menu-content ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-
-      .menu-content li {
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 10px;
-        cursor: pointer;
-        font-size: 18px;
-        padding: 10px 15px;
+      #vocab-container {
+        max-width: 600px;
+        margin: 100px auto;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 0 10px #aaa;
         text-align: center;
-        transition: transform 0.2s;
-        border-radius: 6px;
-        background-color: transparent;
-        z-index: 1;
       }
 
-      .menu-content li::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
+      #vocab-container img {
+        max-width: 100%;
+        border-radius: 10px;
+        margin-top: 10px;
+      }
+
+      #vocab-container audio {
         width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: -1;
-        border-radius: 6px;
+        margin-top: 10px;
       }
 
-      .menu-content li:nth-child(1):hover::before {
-        background-image: url("../image/home-bg.jpg");
-        opacity: 1;
+      button {
+        padding: 8px 20px;
+        margin: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        background-color: #3498db;
+        color: white;
       }
 
-      .menu-content li:nth-child(2):hover::before {
-        background-image: url("../image/exit.jpg");
-        opacity: 1;
+      ul {
+        padding-left: 20px;
+        text-align: left;
       }
     </style>
   </head>
-  <body
-    oncontextmenu="return false"
-    onselectstart="return false"
-    ondragstart="return false"
-  >
-    <div id="loader"></div>
-
-    <div class="menu-container">
-      <div class="menu-icon" id="hamburger" onclick="toggleMenu()">&#9776;</div>
-      <img
-        src="../image/menu-bar.jpg"
-        alt="Icon"
-        class="menu-image"
-        id="icon"
-        onclick="toggleMenu()"
-      />
-      <div class="menu-content" id="menu">
-        <ul>
-          <li onclick="window.location.href='../index.html'">Trang chủ</li>
-          <li onclick="window.location.href='english.html'">Thoát</li>
-        </ul>
+  <body>
+    <div id="vocab-container">
+      <h2 id="english-word"></h2>
+      <p><strong>Tiếng Việt:</strong> <span id="vietnamese-word"></span></p>
+      <p><strong>Tiếng Nhật:</strong> <span id="japanese-word"></span></p>
+      <p><strong>Loại từ:</strong> <span id="type"></span></p>
+      <p><strong>Ý nghĩa:</strong> <span id="meaning"></span></p>
+      <p><strong>Ví dụ:</strong></p>
+      <ul id="examples"></ul>
+      <img id="vocab-image" src="" alt="Từ vựng" />
+      <audio id="vocab-audio" controls></audio>
+      <div>
+        <button onclick="prevWord()">&#8592; Trước</button>
+        <button onclick="nextWord()">Tiếp &#8594;</button>
       </div>
     </div>
 
     <script>
-      function toggleMenu() {
-        const icon = document.getElementById("icon");
-        const hamburger = document.getElementById("hamburger");
-        const menu = document.getElementById("menu");
+      let words = [];
+      let currentIndex = 0;
 
-        const hamburgerVisible =
-          window.getComputedStyle(hamburger).display !== "none";
+      function displayWord(word) {
+        document.getElementById("english-word").textContent = word.english;
+        document.getElementById("vietnamese-word").textContent =
+          word.vietnamese;
+        document.getElementById("japanese-word").textContent = word.japanese;
+        document.getElementById("type").textContent = word.type || "";
+        document.getElementById("meaning").textContent = word.meaning || "";
 
-        if (hamburgerVisible) {
-          hamburger.style.display = "none";
-          icon.style.display = "block";
-          menu.style.display = "block";
-        } else {
-          hamburger.style.display = "block";
-          icon.style.display = "none";
-          menu.style.display = "none";
-        }
+        const exampleList = document.getElementById("examples");
+        exampleList.innerHTML = "";
+        (word.examples || []).forEach((ex) => {
+          const li = document.createElement("li");
+          li.textContent = ex;
+          exampleList.appendChild(li);
+        });
+
+        document.getElementById(
+          "vocab-image"
+        ).src = `./data/cac_loai_qua/qua_${word.english}/english/${word.image}`;
+        document.getElementById(
+          "vocab-audio"
+        ).src = `./data/cac_loai_qua/qua_${word.english}/english/${word.audio}`;
+        document.getElementById("vocab-audio").load();
       }
 
-      document.addEventListener("keydown", function (e) {
-        if (
-          (e.ctrlKey && ["u", "s", "c"].includes(e.key.toLowerCase())) ||
-          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") ||
-          e.key === "F12"
-        ) {
-          e.preventDefault();
-        }
-      });
+      function nextWord() {
+        currentIndex = (currentIndex + 1) % words.length;
+        displayWord(words[currentIndex]);
+      }
 
-      window.addEventListener("load", function () {
-        const loader = document.getElementById("loader");
-        loader.style.display = "none";
-      });
+      function prevWord() {
+        currentIndex = (currentIndex - 1 + words.length) % words.length;
+        displayWord(words[currentIndex]);
+      }
+
+      // Quan trọng: JSON phải được truy cập từ server (không dùng file://)
+      fetch("./data/cac_loai_qua/fruits.json")
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Không thể tải file JSON.");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          words = data;
+          if (words.length > 0) {
+            displayWord(words[currentIndex]);
+          }
+        })
+        .catch((err) => {
+          console.error("Lỗi tải JSON:", err);
+          alert(
+            "Không thể tải dữ liệu. Vui lòng chạy file qua máy chủ (Live Server hoặc localhost)."
+          );
+        });
     </script>
   </body>
 </html>
