@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trò Chơi Từ Vựng Đa Ngôn Ngữ</title>
     <style>
+      /* * CSS RESET/BASE STYLES */
+      html {
+        font-size: 16px; /* Kích thước font cơ bản cho desktop */
+      }
+
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         display: flex;
@@ -13,81 +18,85 @@
         min-height: 100vh;
         margin: 0;
         color: #333;
-        /* Ảnh nền toàn trang */
         background-image: url("background.jpg"); /* SỬ DỤNG ẢNH BẠN ĐÃ TẢI LÊN */
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
         overflow: hidden; /* Ngăn cuộn trang khi menu mở */
+
+        /* Thêm thuộc tính CSS để ngăn chọn văn bản */
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Standard */
       }
 
       /* --- Overlay (menu che phủ) --- */
       #menuOverlay {
-        position: fixed; /* Che phủ toàn bộ màn hình */
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.9); /* Nền đen mờ */
+        background-color: rgba(0, 0, 0, 0.9);
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Căn giữa theo chiều dọc */
-        align-items: center; /* Căn giữa theo chiều ngang */
-        z-index: 1000; /* Đảm bảo menu nằm trên cùng */
-        opacity: 0; /* Ban đầu ẩn */
-        visibility: hidden; /* Ban đầu không hiển thị */
-        transition: opacity 0.3s ease, visibility 0.3s ease; /* Hiệu ứng mờ dần */
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
       }
       #menuOverlay.open {
         opacity: 1;
         visibility: visible;
       }
 
-      /* Container cho các nút trong menu overlay */
       #menuOverlay .menu-items {
         display: flex;
-        flex-direction: column; /* Xếp các nút theo chiều dọc */
-        align-items: center; /* Căn giữa các nút theo chiều ngang */
-        gap: 20px; /* Khoảng cách đều giữa các nút */
-        width: 90%; /* Chiều rộng của khối menu */
-        max-width: 400px; /* Giới hạn chiều rộng tối đa */
-        padding: 20px; /* Khoảng đệm bên trong khối menu */
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 90%;
+        max-width: 400px;
+        padding: 20px;
         box-sizing: border-box;
       }
 
       /* --- Style chung cho tất cả các nút trong Menu Overlay --- */
       #menuOverlay .menu-items button {
         color: white;
-        padding: 20px 0; /* Khoảng đệm dọc, ngang tự động */
+        padding: 1.2em 0;
         border: none;
-        border-radius: 12px; /* Bo tròn góc nhiều hơn */
-        font-size: 1.6em; /* Cỡ chữ phù hợp */
-        font-weight: bold; /* In đậm chữ */
+        border-radius: 12px;
+        font-size: 1.4em;
+        font-weight: bold;
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.1s ease,
           box-shadow 0.3s ease;
-        width: 100%; /* Nút chiếm toàn bộ chiều rộng của parent (.menu-items) */
-        max-width: 300px; /* Giới hạn chiều rộng tối đa của từng nút */
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Đổ bóng nổi bật hơn */
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Đổ bóng chữ để dễ đọc */
+        width: 100%;
+        max-width: 300px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
       }
 
-      /* --- Màu sắc riêng cho từng loại nút --- */
+      /* Màu sắc riêng cho từng loại nút (giữ nguyên) */
       #menuOverlay .menu-items button[data-lang="english_vietnamese.txt"] {
-        background-color: #007bff; /* Xanh dương */
+        background-color: #007bff;
       }
       #menuOverlay .menu-items button[data-lang="japanese_vietnamese.txt"] {
-        background-color: #28a745; /* Xanh lá */
+        background-color: #28a745;
       }
       #menuOverlay .menu-items button[data-lang="russian_vietnamese.txt"] {
-        background-color: #dc3545; /* Đỏ */
+        background-color: #dc3545;
       }
       #backToHomeMenuButton {
-        background-color: #6c757d; /* Xám cho nút quay lại */
+        background-color: #6c757d;
       }
 
-      /* --- Hiệu ứng Hover --- */
+      /* Hiệu ứng Hover/Active (giữ nguyên) */
       #menuOverlay
         .menu-items
         button[data-lang="english_vietnamese.txt"]:hover {
@@ -110,8 +119,6 @@
         background-color: #5a6268;
         transform: translateY(-3px);
       }
-
-      /* --- Hiệu ứng Active (nhấn) chung --- */
       #menuOverlay .menu-items button:active {
         transform: translateY(0);
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -131,17 +138,16 @@
         flex-direction: column;
         justify-content: space-around;
         padding: 0;
-        z-index: 1001; /* Đảm bảo nút menu nằm trên overlay */
+        z-index: 1001;
       }
       #menuToggle span {
         display: block;
         width: 100%;
         height: 5px;
-        background-color: white; /* Màu trắng để dễ nhìn trên nền ảnh */
+        background-color: white;
         border-radius: 3px;
         transition: all 0.3s ease;
       }
-      /* Animation khi menu mở */
       #menuToggle.open span:nth-child(1) {
         transform: rotate(45deg) translate(8px, 8px);
       }
@@ -154,55 +160,50 @@
 
       /* --- Màn hình Container chứa game --- */
       .container {
-        background-color: rgba(
-          255,
-          255,
-          255,
-          0.95
-        ); /* Hơi trong suốt hơn khi chơi game */
-        padding: 40px;
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 30px;
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         text-align: center;
         width: 90%;
         max-width: 600px;
         box-sizing: border-box;
-        display: none; /* Ban đầu ẩn */
+        display: none;
       }
       h1 {
         color: #007bff;
-        margin-bottom: 30px;
-        font-size: 2.5em;
+        margin-bottom: 25px;
+        font-size: 2.2em;
       }
 
-      /* --- Game Screen Styles (từ phiên bản trước) --- */
+      /* --- Game Screen Styles --- */
       #gameScreen {
         text-align: center;
       }
       #question {
-        font-size: 2.8em;
+        font-size: 2.5em;
         margin-bottom: 10px;
         color: #0056b3;
         font-weight: bold;
       }
       #pronunciation {
-        font-size: 1.5em;
+        font-size: 1.3em;
         color: #777;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
       }
       .options-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-top: 25px;
+        gap: 12px;
+        margin-top: 20px;
       }
       .option-button {
-        background-color: #17a2b8; /* Xanh ngọc */
+        background-color: #17a2b8;
         color: white;
-        padding: 18px 25px;
+        padding: 15px 20px;
         border: none;
         border-radius: 8px;
-        font-size: 1.25em;
+        font-size: 1.1em;
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.1s ease,
           box-shadow 0.3s ease;
@@ -217,21 +218,21 @@
         transform: translateY(0);
       }
       #feedback {
-        margin-top: 25px;
-        font-size: 1.3em;
+        margin-top: 20px;
+        font-size: 1.1em;
         font-weight: bold;
         min-height: 1.5em;
       }
       #score {
-        margin-top: 15px;
-        font-size: 1.4em;
+        margin-top: 10px;
+        font-size: 1.2em;
         color: #555;
         font-weight: 600;
       }
       #gameEndMessage {
-        font-size: 2.2em;
+        font-size: 2em;
         color: #28a745;
-        margin-top: 40px;
+        margin-top: 30px;
         font-weight: bold;
         display: none;
       }
@@ -241,14 +242,13 @@
       .wrong-answer {
         background-color: #f44336 !important;
       }
-      /* Nút "Quay Lại Menu Chính" sau khi kết thúc game */
       #backToGameEndButton {
-        background-color: #dc3545; /* Đỏ */
+        background-color: #dc3545;
         color: white;
-        padding: 12px 25px;
+        padding: 10px 20px;
         border: none;
         border-radius: 8px;
-        margin-top: 30px;
+        margin-top: 25px;
         cursor: pointer;
         transition: background-color 0.3s ease;
       }
@@ -259,13 +259,125 @@
       /* --- Style cho ảnh GIF nhỏ ở góc dưới bên phải --- */
       .small-gif-corner {
         position: fixed;
-        bottom: 20px; /* Cách đáy 20px */
-        right: 20px; /* Cách phải 20px */
-        width: 150px; /* Kích thước mong muốn (ví dụ 150px) */
-        height: auto; /* Giữ tỷ lệ ảnh */
-        border-radius: 10px; /* Bo góc nhẹ */
-        z-index: 99; /* Đảm bảo nó nằm dưới menu toggle và menu overlay, nhưng trên nội dung chính */
-        border: none; /* Đảm bảo không có border */
+        bottom: 20px;
+        right: 20px;
+        width: 150px;
+        height: auto;
+        border-radius: 10px;
+        z-index: 99;
+        border: none;
+      }
+
+      /* ======================================================= */
+      /* MEDIA QUERIES: Đảm bảo hiển thị tốt trên các thiết bị */
+      /* ======================================================= */
+
+      /* Cho màn hình nhỏ hơn (điện thoại, max-width: 768px là một điểm cắt phổ biến) */
+      @media (max-width: 768px) {
+        html {
+          font-size: 14px; /* Giảm font-size cơ bản trên màn hình nhỏ hơn */
+        }
+
+        #menuOverlay h1 {
+          font-size: 2.8em; /* Giảm kích thước tiêu đề menu */
+          margin-bottom: 30px;
+        }
+
+        #menuOverlay .menu-items button {
+          font-size: 1.2em; /* Giảm kích thước chữ nút menu */
+          padding: 1em 0;
+        }
+
+        #menuToggle {
+          width: 40px; /* Nhỏ hơn một chút cho nút hamburger */
+          height: 32px;
+          top: 15px;
+          right: 15px;
+        }
+
+        .container {
+          padding: 20px; /* Giảm padding container game */
+          width: 95%; /* Chiếm nhiều không gian hơn trên màn hình nhỏ */
+        }
+
+        h1#gameTitle {
+          font-size: 2em; /* Giảm kích thước tiêu đề game */
+        }
+
+        #question {
+          font-size: 2em; /* Giảm kích thước câu hỏi */
+        }
+
+        #pronunciation {
+          font-size: 1.1em; /* Giảm kích thước phiên âm */
+        }
+
+        .options-grid {
+          grid-template-columns: 1fr; /* 1 cột cho các nút tùy chọn trên mobile */
+          gap: 10px;
+        }
+
+        .option-button {
+          padding: 12px 15px; /* Giảm padding nút tùy chọn */
+          font-size: 1em; /* Giảm kích thước chữ nút tùy chọn */
+        }
+
+        #feedback {
+          font-size: 1em;
+        }
+
+        #score {
+          font-size: 1.1em;
+        }
+
+        #gameEndMessage {
+          font-size: 1.8em;
+        }
+
+        #backToGameEndButton {
+          padding: 10px 20px;
+          font-size: 0.9em;
+          margin-top: 20px;
+        }
+
+        .small-gif-corner {
+          width: 100px; /* Giảm kích thước GIF trên điện thoại */
+          bottom: 10px;
+          right: 10px;
+        }
+      }
+
+      /* Cho màn hình rất nhỏ (ví dụ: iPhone 5/SE) */
+      @media (max-width: 375px) {
+        html {
+          font-size: 12px; /* Giảm font-size cơ bản hơn nữa */
+        }
+
+        #menuOverlay h1 {
+          font-size: 2.2em;
+        }
+
+        #menuOverlay .menu-items button {
+          font-size: 1em;
+          padding: 0.8em 0;
+        }
+
+        #question {
+          font-size: 1.8em;
+        }
+
+        #pronunciation {
+          font-size: 1em;
+        }
+
+        .option-button {
+          font-size: 0.9em;
+          padding: 10px 12px;
+        }
+
+        .small-gif-corner {
+          width: 80px; /* Kích thước GIF nhỏ hơn nữa */
+        }
       }
     </style>
   </head>
@@ -347,13 +459,36 @@
         optionsContainer.getElementsByClassName("option-button")
       );
 
-      // --- Logic Menu Overlay và Game ---
+      // --- BỔ SUNG: Chống copy/paste ---
+      document.addEventListener("contextmenu", (e) => e.preventDefault()); // Chặn chuột phải
+      document.addEventListener("copy", (e) => {
+        e.preventDefault();
+        alert("Copying is disabled on this page."); // Thông báo cho người dùng
+      });
+      document.addEventListener("cut", (e) => {
+        e.preventDefault();
+        alert("Cutting is disabled on this page.");
+      });
+      document.addEventListener("paste", (e) => {
+        e.preventDefault();
+        alert("Pasting is disabled on this page.");
+      });
+
+      // Bạn cũng có thể ngăn chọn văn bản bằng CSS
+      // Đã thêm vào phần `body` trong CSS:
+      /*
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      */
+
+      // --- Logic Menu Overlay và Game (giữ nguyên) ---
 
       // Mở/đóng Menu Overlay
       menuToggle.addEventListener("click", () => {
         menuOverlay.classList.toggle("open");
         menuToggle.classList.toggle("open");
-        // Khi mở menu, ẩn game container nếu nó đang hiển thị
         if (
           menuOverlay.classList.contains("open") &&
           gameContainer.style.display === "block"
@@ -368,9 +503,9 @@
           selectedLanguageFile = button.dataset.lang;
           selectedLanguageName = button.textContent;
 
-          menuOverlay.classList.remove("open"); // Đóng menu overlay
-          menuToggle.classList.remove("open"); // Đặt lại biểu tượng hamburger
-          gameContainer.style.display = "block"; // Hiển thị container game
+          menuOverlay.classList.remove("open");
+          menuToggle.classList.remove("open");
+          gameContainer.style.display = "block";
 
           gameTitleElement.textContent = `Học từ vựng: ${selectedLanguageName}`;
 
@@ -406,7 +541,7 @@
         resetGame();
       });
 
-      // --- Logic Game (giữ nguyên, đã có dấu tiếng Việt và cách đọc) ---
+      // --- Logic Game (giữ nguyên) ---
       async function loadVocabulary(filename) {
         try {
           const response = await fetch(filename);
@@ -604,10 +739,9 @@
       }
 
       document.addEventListener("DOMContentLoaded", () => {
-        // Ban đầu, chỉ ảnh nền và nút hamburger hiển thị, gameContainer và menuOverlay ẩn
         gameContainer.style.display = "none";
-        menuOverlay.classList.remove("open"); // Đảm bảo menu ẩn khi tải trang
-        menuToggle.classList.remove("open"); // Đảm bảo hamburger là 3 gạch
+        menuOverlay.classList.remove("open");
+        menuToggle.classList.remove("open");
       });
     </script>
   </body>
