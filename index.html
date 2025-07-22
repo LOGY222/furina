@@ -24,8 +24,6 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         overflow: hidden; /* Ngăn cuộn trang khi menu mở */
-
-        /* Thêm thuộc tính CSS để ngăn chọn văn bản */
         -webkit-user-select: none; /* Safari */
         -moz-user-select: none; /* Firefox */
         -ms-user-select: none; /* Internet Explorer/Edge */
@@ -58,27 +56,35 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 20px;
+        gap: 15px; /* Giảm khoảng cách giữa các nút */
         width: 90%;
-        max-width: 400px;
+        max-width: 350px; /* Giảm chiều rộng tối đa của menu */
         padding: 20px;
         box-sizing: border-box;
+      }
+
+      /* Tiêu đề "CHỌN NGÔN NGỮ" trong menu */
+      #menuOverlay h1 {
+        color: white;
+        font-size: 2.5em; /* Giảm kích thước chữ */
+        margin-bottom: 30px; /* Giảm khoảng cách dưới */
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
       }
 
       /* --- Style chung cho tất cả các nút trong Menu Overlay --- */
       #menuOverlay .menu-items button {
         color: white;
-        padding: 1.2em 0;
+        padding: 1em 0; /* Giảm padding nút */
         border: none;
-        border-radius: 12px;
-        font-size: 1.4em;
+        border-radius: 10px; /* Giảm bo tròn một chút */
+        font-size: 1.2em; /* Giảm kích thước chữ */
         font-weight: bold;
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.1s ease,
           box-shadow 0.3s ease;
         width: 100%;
-        max-width: 300px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        max-width: 280px; /* Giảm chiều rộng tối đa của nút */
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2); /* Giảm đổ bóng */
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
       }
 
@@ -101,23 +107,23 @@
         .menu-items
         button[data-lang="english_vietnamese.txt"]:hover {
         background-color: #0056b3;
-        transform: translateY(-3px);
+        transform: translateY(-2px); /* Giảm hiệu ứng bay lên */
       }
       #menuOverlay
         .menu-items
         button[data-lang="japanese_vietnamese.txt"]:hover {
         background-color: #218838;
-        transform: translateY(-3px);
+        transform: translateY(-2px);
       }
       #menuOverlay
         .menu-items
         button[data-lang="russian_vietnamese.txt"]:hover {
         background-color: #c82333;
-        transform: translateY(-3px);
+        transform: translateY(-2px);
       }
       #backToHomeMenuButton:hover {
         background-color: #5a6268;
-        transform: translateY(-3px);
+        transform: translateY(-2px);
       }
       #menuOverlay .menu-items button:active {
         transform: translateY(0);
@@ -127,10 +133,10 @@
       /* --- Biểu tượng Menu Hamburger --- */
       #menuToggle {
         position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 50px;
-        height: 40px;
+        top: 15px; /* Giảm khoảng cách từ trên */
+        right: 15px; /* Giảm khoảng cách từ phải */
+        width: 45px; /* Giảm kích thước */
+        height: 35px;
         background: none;
         border: none;
         cursor: pointer;
@@ -143,37 +149,37 @@
       #menuToggle span {
         display: block;
         width: 100%;
-        height: 5px;
+        height: 4px; /* Giảm độ dày của thanh */
         background-color: white;
         border-radius: 3px;
         transition: all 0.3s ease;
       }
       #menuToggle.open span:nth-child(1) {
-        transform: rotate(45deg) translate(8px, 8px);
+        transform: rotate(45deg) translate(7px, 7px); /* Điều chỉnh translate */
       }
       #menuToggle.open span:nth-child(2) {
         opacity: 0;
       }
       #menuToggle.open span:nth-child(3) {
-        transform: rotate(-45deg) translate(8px, -8px);
+        transform: rotate(-45deg) translate(7px, -7px); /* Điều chỉnh translate */
       }
 
       /* --- Màn hình Container chứa game --- */
       .container {
         background-color: rgba(255, 255, 255, 0.95);
-        padding: 30px;
+        padding: 25px; /* Giảm padding */
         border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Giảm đổ bóng */
         text-align: center;
         width: 90%;
-        max-width: 600px;
+        max-width: 550px; /* Giảm max-width */
         box-sizing: border-box;
         display: none;
       }
-      h1 {
+      h1#gameTitle {
         color: #007bff;
-        margin-bottom: 25px;
-        font-size: 2.2em;
+        margin-bottom: 20px; /* Giảm margin dưới */
+        font-size: 2em; /* Giảm kích thước chữ */
       }
 
       /* --- Game Screen Styles --- */
@@ -181,58 +187,61 @@
         text-align: center;
       }
       #question {
-        font-size: 2.5em;
-        margin-bottom: 10px;
+        font-size: 2.2em; /* Giảm kích thước chữ */
+        margin-bottom: 8px; /* Giảm margin dưới */
         color: #0056b3;
         font-weight: bold;
+        word-wrap: break-word; /* Đảm bảo từ dài không tràn */
       }
       #pronunciation {
-        font-size: 1.3em;
+        font-size: 1.1em; /* Giảm kích thước chữ */
         color: #777;
-        margin-bottom: 25px;
+        margin-bottom: 20px; /* Giảm margin dưới */
       }
       .options-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-top: 20px;
+        grid-template-columns: 1fr 1fr; /* Giữ 2 cột cho màn hình rộng */
+        gap: 10px; /* Giảm khoảng cách giữa các nút */
+        margin-top: 15px; /* Giảm margin trên */
       }
       .option-button {
         background-color: #17a2b8;
         color: white;
-        padding: 15px 20px;
+        padding: 12px 15px; /* Giảm padding */
         border: none;
         border-radius: 8px;
-        font-size: 1.1em;
+        font-size: 1em; /* Giảm kích thước chữ */
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.1s ease,
           box-shadow 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Giảm đổ bóng */
+        white-space: normal; /* Cho phép văn bản xuống dòng */
+        word-wrap: break-word; /* Đảm bảo văn bản dài không tràn */
       }
       .option-button:hover {
         background-color: #138496;
-        transform: translateY(-2px);
+        transform: translateY(-1px); /* Giảm hiệu ứng bay lên */
       }
       .option-button:active {
         background-color: #117a8b;
         transform: translateY(0);
       }
       #feedback {
-        margin-top: 20px;
-        font-size: 1.1em;
+        margin-top: 15px; /* Giảm margin trên */
+        font-size: 1em; /* Giảm kích thước chữ */
         font-weight: bold;
         min-height: 1.5em;
       }
       #score {
-        margin-top: 10px;
-        font-size: 1.2em;
+        margin-top: 8px; /* Giảm margin trên */
+        font-size: 1.1em; /* Giảm kích thước chữ */
         color: #555;
         font-weight: 600;
       }
       #gameEndMessage {
-        font-size: 2em;
+        font-size: 1.8em; /* Giảm kích thước chữ */
         color: #28a745;
-        margin-top: 30px;
+        margin-top: 25px; /* Giảm margin trên */
         font-weight: bold;
         display: none;
       }
@@ -245,12 +254,13 @@
       #backToGameEndButton {
         background-color: #dc3545;
         color: white;
-        padding: 10px 20px;
+        padding: 8px 18px; /* Giảm padding */
         border: none;
         border-radius: 8px;
-        margin-top: 25px;
+        margin-top: 20px; /* Giảm margin trên */
         cursor: pointer;
         transition: background-color 0.3s ease;
+        font-size: 0.9em; /* Giảm kích thước chữ */
       }
       #backToGameEndButton:hover {
         background-color: #c82333;
@@ -259,9 +269,9 @@
       /* --- Style cho ảnh GIF nhỏ ở góc dưới bên phải --- */
       .small-gif-corner {
         position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 150px;
+        bottom: 15px; /* Giảm khoảng cách từ dưới */
+        right: 15px; /* Giảm khoảng cách từ phải */
+        width: 120px; /* Giảm kích thước */
         height: auto;
         border-radius: 10px;
         z-index: 99;
@@ -279,69 +289,79 @@
         }
 
         #menuOverlay h1 {
-          font-size: 2.8em; /* Giảm kích thước tiêu đề menu */
-          margin-bottom: 30px;
+          font-size: 2.2em; /* Giảm kích thước tiêu đề menu */
+          margin-bottom: 25px;
         }
 
         #menuOverlay .menu-items button {
-          font-size: 1.2em; /* Giảm kích thước chữ nút menu */
-          padding: 1em 0;
+          font-size: 1.1em; /* Giảm kích thước chữ nút menu */
+          padding: 0.9em 0;
         }
 
         #menuToggle {
-          width: 40px; /* Nhỏ hơn một chút cho nút hamburger */
-          height: 32px;
-          top: 15px;
-          right: 15px;
+          width: 38px; /* Nhỏ hơn một chút cho nút hamburger */
+          height: 30px;
+          top: 10px;
+          right: 10px;
+        }
+        #menuToggle span {
+          height: 3px; /* Giảm độ dày của thanh hamburger */
+        }
+        #menuToggle.open span:nth-child(1) {
+          transform: rotate(45deg) translate(6px, 6px);
+        }
+        #menuToggle.open span:nth-child(3) {
+          transform: rotate(-45deg) translate(6px, -6px);
         }
 
         .container {
-          padding: 20px; /* Giảm padding container game */
+          padding: 18px; /* Giảm padding container game */
           width: 95%; /* Chiếm nhiều không gian hơn trên màn hình nhỏ */
+          max-width: 450px; /* Giảm max-width */
         }
 
         h1#gameTitle {
-          font-size: 2em; /* Giảm kích thước tiêu đề game */
+          font-size: 1.8em; /* Giảm kích thước tiêu đề game */
         }
 
         #question {
-          font-size: 2em; /* Giảm kích thước câu hỏi */
+          font-size: 1.8em; /* Giảm kích thước câu hỏi */
         }
 
         #pronunciation {
-          font-size: 1.1em; /* Giảm kích thước phiên âm */
+          font-size: 1em; /* Giảm kích thước phiên âm */
         }
 
         .options-grid {
           grid-template-columns: 1fr; /* 1 cột cho các nút tùy chọn trên mobile */
-          gap: 10px;
+          gap: 8px; /* Giảm khoảng cách */
         }
 
         .option-button {
-          padding: 12px 15px; /* Giảm padding nút tùy chọn */
-          font-size: 1em; /* Giảm kích thước chữ nút tùy chọn */
+          padding: 10px 12px; /* Giảm padding nút tùy chọn */
+          font-size: 0.95em; /* Giảm kích thước chữ nút tùy chọn */
         }
 
         #feedback {
-          font-size: 1em;
+          font-size: 0.9em;
         }
 
         #score {
-          font-size: 1.1em;
+          font-size: 1em;
         }
 
         #gameEndMessage {
-          font-size: 1.8em;
+          font-size: 1.6em;
         }
 
         #backToGameEndButton {
-          padding: 10px 20px;
-          font-size: 0.9em;
-          margin-top: 20px;
+          padding: 8px 15px;
+          font-size: 0.85em;
+          margin-top: 15px;
         }
 
         .small-gif-corner {
-          width: 100px; /* Giảm kích thước GIF trên điện thoại */
+          width: 90px; /* Giảm kích thước GIF trên điện thoại */
           bottom: 10px;
           right: 10px;
         }
@@ -350,24 +370,62 @@
       /* Cho màn hình rất nhỏ (ví dụ: iPhone 5/SE) */
       @media (max-width: 375px) {
         html {
-          font-size: 12px; /* Giảm font-size cơ bản hơn nữa */
+          font-size: 13px; /* Giảm font-size cơ bản hơn nữa */
         }
 
         #menuOverlay h1 {
-          font-size: 2.2em;
+          font-size: 2em;
         }
 
         #menuOverlay .menu-items button {
           font-size: 1em;
-          padding: 0.8em 0;
+          padding: 0.7em 0;
         }
 
         #question {
-          font-size: 1.8em;
+          font-size: 1.6em;
         }
 
         #pronunciation {
-          font-size: 1em;
+          font-size: 0.9em;
+        }
+
+        .option-button {
+          font-size: 0.9em;
+          padding: 8px 10px;
+        }
+
+        .small-gif-corner {
+          width: 70px; /* Kích thước GIF nhỏ hơn nữa */
+        }
+      }
+
+      /* MEDIA QUERY cho màn hình ngang (landscape) */
+      @media (orientation: landscape) and (max-height: 500px) {
+        body {
+          flex-direction: row; /* Bố cục ngang */
+          padding: 10px;
+          overflow-y: auto; /* Cho phép cuộn nếu cần */
+        }
+
+        .container {
+          max-width: 70vw; /* Giới hạn chiều rộng theo viewport width */
+          max-height: 90vh; /* Giới hạn chiều cao theo viewport height */
+          padding: 20px;
+          margin: auto; /* Căn giữa */
+        }
+
+        #question {
+          font-size: 1.8em; /* Điều chỉnh font size cho phù hợp với chiều ngang */
+        }
+
+        #pronunciation {
+          font-size: 0.9em;
+        }
+
+        .options-grid {
+          grid-template-columns: 1fr 1fr; /* Giữ 2 cột */
+          gap: 8px;
         }
 
         .option-button {
@@ -375,8 +433,19 @@
           padding: 10px 12px;
         }
 
+        #menuOverlay .menu-items {
+          max-width: 50vw; /* Menu cũng gọn hơn */
+          gap: 10px;
+        }
+        #menuOverlay .menu-items button {
+          font-size: 1.1em;
+          padding: 0.8em 0;
+        }
+
         .small-gif-corner {
-          width: 80px; /* Kích thước GIF nhỏ hơn nữa */
+          width: 100px; /* Giữ kích thước hợp lý */
+          bottom: 10px;
+          right: 10px;
         }
       }
     </style>
@@ -473,15 +542,6 @@
         e.preventDefault();
         alert("Pasting is disabled on this page.");
       });
-
-      // Bạn cũng có thể ngăn chọn văn bản bằng CSS
-      // Đã thêm vào phần `body` trong CSS:
-      /*
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      */
 
       // --- Logic Menu Overlay và Game (giữ nguyên) ---
 
