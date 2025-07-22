@@ -1,9 +1,614 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Trò Chơi Từ Vựng Đa Ngôn Ngữ</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        color: #333;
+        /* Ảnh nền toàn trang */
+        background-image: url("background.jpg"); /* SỬ DỤNG ẢNH BẠN ĐÃ TẢI LÊN */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        overflow: hidden; /* Ngăn cuộn trang khi menu mở */
+      }
+
+      /* --- Overlay (menu che phủ) --- */
+      #menuOverlay {
+        position: fixed; /* Che phủ toàn bộ màn hình */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9); /* Nền đen mờ */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Căn giữa theo chiều dọc */
+        align-items: center; /* Căn giữa theo chiều ngang */
+        z-index: 1000; /* Đảm bảo menu nằm trên cùng */
+        opacity: 0; /* Ban đầu ẩn */
+        visibility: hidden; /* Ban đầu không hiển thị */
+        transition: opacity 0.3s ease, visibility 0.3s ease; /* Hiệu ứng mờ dần */
+      }
+      #menuOverlay.open {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* Container cho các nút trong menu overlay */
+      #menuOverlay .menu-items {
+        display: flex;
+        flex-direction: column; /* Xếp các nút theo chiều dọc */
+        align-items: center; /* Căn giữa các nút theo chiều ngang */
+        gap: 20px; /* Khoảng cách đều giữa các nút */
+        width: 90%; /* Chiều rộng của khối menu */
+        max-width: 400px; /* Giới hạn chiều rộng tối đa */
+        padding: 20px; /* Khoảng đệm bên trong khối menu */
+        box-sizing: border-box;
+      }
+
+      /* --- Style chung cho tất cả các nút trong Menu Overlay --- */
+      #menuOverlay .menu-items button {
+        color: white;
+        padding: 20px 0; /* Khoảng đệm dọc, ngang tự động */
+        border: none;
+        border-radius: 12px; /* Bo tròn góc nhiều hơn */
+        font-size: 1.6em; /* Cỡ chữ phù hợp */
+        font-weight: bold; /* In đậm chữ */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.1s ease,
+          box-shadow 0.3s ease;
+        width: 100%; /* Nút chiếm toàn bộ chiều rộng của parent (.menu-items) */
+        max-width: 300px; /* Giới hạn chiều rộng tối đa của từng nút */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Đổ bóng nổi bật hơn */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Đổ bóng chữ để dễ đọc */
+      }
+
+      /* --- Màu sắc riêng cho từng loại nút --- */
+      #menuOverlay .menu-items button[data-lang="english_vietnamese.txt"] {
+        background-color: #007bff; /* Xanh dương */
+      }
+      #menuOverlay .menu-items button[data-lang="japanese_vietnamese.txt"] {
+        background-color: #28a745; /* Xanh lá */
+      }
+      #menuOverlay .menu-items button[data-lang="russian_vietnamese.txt"] {
+        background-color: #dc3545; /* Đỏ */
+      }
+      #backToHomeMenuButton {
+        background-color: #6c757d; /* Xám cho nút quay lại */
+      }
+
+      /* --- Hiệu ứng Hover --- */
+      #menuOverlay
+        .menu-items
+        button[data-lang="english_vietnamese.txt"]:hover {
+        background-color: #0056b3;
+        transform: translateY(-3px);
+      }
+      #menuOverlay
+        .menu-items
+        button[data-lang="japanese_vietnamese.txt"]:hover {
+        background-color: #218838;
+        transform: translateY(-3px);
+      }
+      #menuOverlay
+        .menu-items
+        button[data-lang="russian_vietnamese.txt"]:hover {
+        background-color: #c82333;
+        transform: translateY(-3px);
+      }
+      #backToHomeMenuButton:hover {
+        background-color: #5a6268;
+        transform: translateY(-3px);
+      }
+
+      /* --- Hiệu ứng Active (nhấn) chung --- */
+      #menuOverlay .menu-items button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      /* --- Biểu tượng Menu Hamburger --- */
+      #menuToggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 50px;
+        height: 40px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 0;
+        z-index: 1001; /* Đảm bảo nút menu nằm trên overlay */
+      }
+      #menuToggle span {
+        display: block;
+        width: 100%;
+        height: 5px;
+        background-color: white; /* Màu trắng để dễ nhìn trên nền ảnh */
+        border-radius: 3px;
+        transition: all 0.3s ease;
+      }
+      /* Animation khi menu mở */
+      #menuToggle.open span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+      }
+      #menuToggle.open span:nth-child(2) {
+        opacity: 0;
+      }
+      #menuToggle.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(8px, -8px);
+      }
+
+      /* --- Màn hình Container chứa game --- */
+      .container {
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.95
+        ); /* Hơi trong suốt hơn khi chơi game */
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 90%;
+        max-width: 600px;
+        box-sizing: border-box;
+        display: none; /* Ban đầu ẩn */
+      }
+      h1 {
+        color: #007bff;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+      }
+
+      /* --- Game Screen Styles (từ phiên bản trước) --- */
+      #gameScreen {
+        text-align: center;
+      }
+      #question {
+        font-size: 2.8em;
+        margin-bottom: 10px;
+        color: #0056b3;
+        font-weight: bold;
+      }
+      #pronunciation {
+        font-size: 1.5em;
+        color: #777;
+        margin-bottom: 30px;
+      }
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 25px;
+      }
+      .option-button {
+        background-color: #17a2b8; /* Xanh ngọc */
+        color: white;
+        padding: 18px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.25em;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.1s ease,
+          box-shadow 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .option-button:hover {
+        background-color: #138496;
+        transform: translateY(-2px);
+      }
+      .option-button:active {
+        background-color: #117a8b;
+        transform: translateY(0);
+      }
+      #feedback {
+        margin-top: 25px;
+        font-size: 1.3em;
+        font-weight: bold;
+        min-height: 1.5em;
+      }
+      #score {
+        margin-top: 15px;
+        font-size: 1.4em;
+        color: #555;
+        font-weight: 600;
+      }
+      #gameEndMessage {
+        font-size: 2.2em;
+        color: #28a745;
+        margin-top: 40px;
+        font-weight: bold;
+        display: none;
+      }
+      .correct-answer {
+        background-color: #4caf50 !important;
+      }
+      .wrong-answer {
+        background-color: #f44336 !important;
+      }
+      /* Nút "Quay Lại Menu Chính" sau khi kết thúc game */
+      #backToGameEndButton {
+        background-color: #dc3545; /* Đỏ */
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        margin-top: 30px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #backToGameEndButton:hover {
+        background-color: #c82333;
+      }
+
+      /* --- Style cho ảnh GIF nhỏ ở góc dưới bên phải --- */
+      .small-gif-corner {
+        position: fixed;
+        bottom: 20px; /* Cách đáy 20px */
+        right: 20px; /* Cách phải 20px */
+        width: 150px; /* Kích thước mong muốn (ví dụ 150px) */
+        height: auto; /* Giữ tỷ lệ ảnh */
+        border-radius: 10px; /* Bo góc nhẹ */
+        z-index: 99; /* Đảm bảo nó nằm dưới menu toggle và menu overlay, nhưng trên nội dung chính */
+        border: none; /* Đảm bảo không có border */
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div id="menuOverlay">
+      <h1
+        style="
+          color: white;
+          font-size: 3.5em;
+          margin-bottom: 50px;
+          text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        "
+      >
+        CHỌN NGÔN NGỮ
+      </h1>
+      <div class="menu-items">
+        <button data-lang="english_vietnamese.txt">Tiếng Anh</button>
+        <button data-lang="japanese_vietnamese.txt">Tiếng Nhật</button>
+        <button data-lang="russian_vietnamese.txt">Tiếng Nga</button>
+        <button id="backToHomeMenuButton">Quay Lại Trang Chủ</button>
+      </div>
+    </div>
+
+    <button id="menuToggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="container" id="gameContainer">
+      <div id="gameScreen">
+        <h1 id="gameTitle"></h1>
+        <p id="score">Điểm: 0 / 0</p>
+        <div id="question"></div>
+        <div id="pronunciation"></div>
+        <div class="options-grid" id="optionsContainer">
+          <button class="option-button"></button>
+          <button class="option-button"></button>
+          <button class="option-button"></button>
+          <button class="option-button"></button>
+        </div>
+        <div id="feedback"></div>
+        <div id="gameEndMessage">BẠN ĐÃ CHIẾN THẮNG!</div>
+        <button id="backToGameEndButton">Quay Lại Menu Chính</button>
+      </div>
+    </div>
+
+    <img src="furina.gif" alt="Ảnh GIF động" class="small-gif-corner" />
+
+    <script>
+      let vocabulary = [];
+      let currentQuestionIndex = 0;
+      let correctAnswersCount = 0;
+      const totalQuestionsToWin = 20;
+      let selectedLanguageFile = "";
+      let selectedLanguageName = "";
+
+      const menuOverlay = document.getElementById("menuOverlay");
+      const menuToggle = document.getElementById("menuToggle");
+      const gameContainer = document.getElementById("gameContainer");
+      const langButtonsInMenu = document.querySelectorAll(
+        "#menuOverlay .menu-items button[data-lang]"
+      );
+      const backToHomeMenuButton = document.getElementById(
+        "backToHomeMenuButton"
+      );
+      const backToGameEndButton = document.getElementById(
+        "backToGameEndButton"
+      );
+
+      const gameTitleElement = document.getElementById("gameTitle");
+      const questionElement = document.getElementById("question");
+      const pronunciationElement = document.getElementById("pronunciation");
+      const optionsContainer = document.getElementById("optionsContainer");
+      const feedbackElement = document.getElementById("feedback");
+      const scoreElement = document.getElementById("score");
+      const gameEndMessage = document.getElementById("gameEndMessage");
+      const optionButtons = Array.from(
+        optionsContainer.getElementsByClassName("option-button")
+      );
+
+      // --- Logic Menu Overlay và Game ---
+
+      // Mở/đóng Menu Overlay
+      menuToggle.addEventListener("click", () => {
+        menuOverlay.classList.toggle("open");
+        menuToggle.classList.toggle("open");
+        // Khi mở menu, ẩn game container nếu nó đang hiển thị
+        if (
+          menuOverlay.classList.contains("open") &&
+          gameContainer.style.display === "block"
+        ) {
+          gameContainer.style.display = "none";
+        }
+      });
+
+      // Xử lý click vào các nút ngôn ngữ trong Menu Overlay
+      langButtonsInMenu.forEach((button) => {
+        button.addEventListener("click", async () => {
+          selectedLanguageFile = button.dataset.lang;
+          selectedLanguageName = button.textContent;
+
+          menuOverlay.classList.remove("open"); // Đóng menu overlay
+          menuToggle.classList.remove("open"); // Đặt lại biểu tượng hamburger
+          gameContainer.style.display = "block"; // Hiển thị container game
+
+          gameTitleElement.textContent = `Học từ vựng: ${selectedLanguageName}`;
+
+          await loadVocabulary(selectedLanguageFile);
+
+          if (vocabulary.length > 0) {
+            startGame();
+          } else {
+            feedbackElement.textContent =
+              "Không có từ vựng cho ngôn ngữ này hoặc lỗi tải file. Vui lòng thử lại.";
+            setTimeout(() => {
+              gameContainer.style.display = "none";
+              menuOverlay.classList.add("open");
+              menuToggle.classList.add("open");
+            }, 2000);
+          }
+        });
+      });
+
+      // Nút "Quay Lại Trang Chủ" trong Menu Overlay
+      backToHomeMenuButton.addEventListener("click", () => {
+        menuOverlay.classList.remove("open");
+        menuToggle.classList.remove("open");
+        gameContainer.style.display = "none";
+        resetGame();
+      });
+
+      // Nút "Quay Lại Menu Chính" sau khi kết thúc game
+      backToGameEndButton.addEventListener("click", () => {
+        gameContainer.style.display = "none";
+        menuOverlay.classList.add("open");
+        menuToggle.classList.add("open");
+        resetGame();
+      });
+
+      // --- Logic Game (giữ nguyên, đã có dấu tiếng Việt và cách đọc) ---
+      async function loadVocabulary(filename) {
+        try {
+          const response = await fetch(filename);
+          const text = await response.text();
+          const lines = text.split("\n").filter((line) => line.trim() !== "");
+          vocabulary = lines
+            .map((line) => {
+              const parts = line.split("=");
+              if (parts.length === 2) {
+                const foreignPart = parts[0].trim();
+                const vietnamesePart = parts[1].trim();
+
+                const match = foreignPart.match(/(.*)\s\((.*)\)/);
+                if (match && match.length === 3) {
+                  return {
+                    foreign: match[1].trim(),
+                    pronunciation: match[2].trim(),
+                    vietnamese: vietnamesePart,
+                  };
+                } else {
+                  return {
+                    foreign: foreignPart,
+                    pronunciation: "",
+                    vietnamese: vietnamesePart,
+                  };
+                }
+              }
+              return null;
+            })
+            .filter(Boolean);
+
+          if (vocabulary.length < 4) {
+            feedbackElement.textContent = `Cần ít nhất 4 cặp từ trong ${filename} để trò chơi hoạt động.`;
+            vocabulary = [];
+          }
+        } catch (error) {
+          console.error("Lỗi khi tải từ vựng:", error);
+          feedbackElement.textContent = `Không thể tải từ vựng từ ${filename}. Vui lòng kiểm tra tên tệp.`;
+          vocabulary = [];
+        }
+      }
+
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      function startGame() {
+        resetGame();
+        shuffleArray(vocabulary);
+        displayQuestion();
+      }
+
+      function resetGame() {
+        currentQuestionIndex = 0;
+        correctAnswersCount = 0;
+        gameEndMessage.style.display = "none";
+        feedbackElement.textContent = "";
+        scoreElement.textContent = `Điểm: 0 / ${totalQuestionsToWin}`;
+        backToGameEndButton.style.display = "none";
+      }
+
+      function displayQuestion() {
+        feedbackElement.textContent = "";
+        optionButtons.forEach((button) => {
+          button.classList.remove("correct-answer", "wrong-answer");
+          button.disabled = false;
+        });
+
+        if (correctAnswersCount >= totalQuestionsToWin) {
+          endGame();
+          return;
+        }
+
+        if (vocabulary.length === 0) {
+          feedbackElement.textContent =
+            "Không có từ vựng để chơi. Vui lòng kiểm tra tệp từ vựng.";
+          return;
+        }
+
+        if (currentQuestionIndex >= vocabulary.length) {
+          shuffleArray(vocabulary);
+          currentQuestionIndex = 0;
+        }
+
+        scoreElement.textContent = `Điểm: ${correctAnswersCount} / ${totalQuestionsToWin}`;
+
+        const currentWord = vocabulary[currentQuestionIndex];
+        questionElement.textContent = currentWord.foreign;
+        pronunciationElement.textContent = currentWord.pronunciation
+          ? `(${currentWord.pronunciation})`
+          : "";
+
+        let options = [currentWord.vietnamese];
+
+        let wrongOptionsPool = vocabulary
+          .filter((word) => word.foreign !== currentWord.foreign)
+          .map((word) => word.vietnamese);
+        shuffleArray(wrongOptionsPool);
+
+        let uniqueWrongOptions = [];
+        for (
+          let i = 0;
+          i < wrongOptionsPool.length && uniqueWrongOptions.length < 3;
+          i++
+        ) {
+          if (
+            wrongOptionsPool[i] !== currentWord.vietnamese &&
+            !uniqueWrongOptions.includes(wrongOptionsPool[i])
+          ) {
+            uniqueWrongOptions.push(wrongOptionsPool[i]);
+          }
+        }
+
+        while (uniqueWrongOptions.length < 3) {
+          if (wrongOptionsPool.length > 0) {
+            uniqueWrongOptions.push(wrongOptionsPool[0]);
+          } else if (vocabulary.length >= 2) {
+            const singleWrong = vocabulary.find(
+              (word) => word.foreign !== currentWord.foreign
+            );
+            if (
+              singleWrong &&
+              !uniqueWrongOptions.includes(singleWrong.vietnamese)
+            ) {
+              uniqueWrongOptions.push(singleWrong.vietnamese);
+            } else if (uniqueWrongOptions.length > 0) {
+              uniqueWrongOptions.push(uniqueWrongOptions[0]);
+            } else {
+              break;
+            }
+          } else {
+            break;
+          }
+        }
+
+        options = options.concat(uniqueWrongOptions.slice(0, 3));
+        shuffleArray(options);
+
+        for (let i = 0; i < optionButtons.length; i++) {
+          if (options[i]) {
+            optionButtons[i].textContent = options[i];
+            optionButtons[i].onclick = () =>
+              checkAnswer(optionButtons[i], currentWord.vietnamese);
+          } else {
+            optionButtons[i].textContent = "Lỗi dữ liệu";
+            optionButtons[i].onclick = null;
+            optionButtons[i].disabled = true;
+          }
+        }
+      }
+
+      function checkAnswer(selectedButton, correctAnswer) {
+        optionButtons.forEach((button) => (button.disabled = true));
+
+        if (selectedButton.textContent === correctAnswer) {
+          selectedButton.classList.add("correct-answer");
+          feedbackElement.style.color = "green";
+          feedbackElement.textContent = "Đúng rồi!";
+          correctAnswersCount++;
+          currentQuestionIndex++;
+          setTimeout(displayQuestion, 1200);
+        } else {
+          selectedButton.classList.add("wrong-answer");
+          optionButtons.forEach((button) => {
+            if (button.textContent === correctAnswer) {
+              button.classList.add("correct-answer");
+            }
+          });
+          feedbackElement.style.color = "red";
+          feedbackElement.textContent = `Sai rồi! Đáp án đúng là: ${correctAnswer}`;
+
+          correctAnswersCount = 0;
+          currentQuestionIndex = 0;
+          shuffleArray(vocabulary);
+
+          setTimeout(() => {
+            alert("Bạn đã trả lời sai! Trò chơi sẽ bắt đầu lại từ đầu.");
+            displayQuestion();
+          }, 2000);
+        }
+      }
+
+      function endGame() {
+        gameEndMessage.style.display = "block";
+        questionElement.textContent = "";
+        pronunciationElement.textContent = "";
+        optionsContainer.innerHTML = "";
+        feedbackElement.textContent = "";
+        scoreElement.textContent = `Bạn đã hoàn thành ${totalQuestionsToWin} câu!`;
+
+        backToGameEndButton.style.display = "block";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Ban đầu, chỉ ảnh nền và nút hamburger hiển thị, gameContainer và menuOverlay ẩn
+        gameContainer.style.display = "none";
+        menuOverlay.classList.remove("open"); // Đảm bảo menu ẩn khi tải trang
+        menuToggle.classList.remove("open"); // Đảm bảo hamburger là 3 gạch
+      });
+    </script>
+  </body>
 </html>
