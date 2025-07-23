@@ -30,6 +30,18 @@
         user-select: none; /* Standard */
       }
 
+      /* --- Logo mới --- */
+      #websiteLogo {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        width: 80px; /* Điều chỉnh kích thước logo theo ý muốn */
+        height: auto;
+        z-index: 1002; /* Đảm bảo logo nằm trên mọi thứ */
+        border-radius: 8px; /* Bo tròn góc nếu muốn */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng nhẹ */
+      }
+
       /* --- Overlay (menu che phủ) --- */
       #menuOverlay {
         position: fixed;
@@ -288,6 +300,12 @@
           font-size: 14px; /* Giảm font-size cơ bản trên màn hình nhỏ hơn */
         }
 
+        #websiteLogo {
+          width: 60px; /* Nhỏ hơn cho màn hình di động */
+          top: 10px;
+          left: 10px;
+        }
+
         #menuOverlay h1 {
           font-size: 2.2em; /* Giảm kích thước tiêu đề menu */
           margin-bottom: 25px;
@@ -373,6 +391,10 @@
           font-size: 13px; /* Giảm font-size cơ bản hơn nữa */
         }
 
+        #websiteLogo {
+          width: 50px; /* Nhỏ hơn nữa cho màn hình rất nhỏ */
+        }
+
         #menuOverlay h1 {
           font-size: 2em;
         }
@@ -406,6 +428,12 @@
           flex-direction: row; /* Bố cục ngang */
           padding: 10px;
           overflow-y: auto; /* Cho phép cuộn nếu cần */
+        }
+
+        #websiteLogo {
+          width: 70px; /* Điều chỉnh kích thước logo cho ngang */
+          top: 10px;
+          left: 10px;
         }
 
         .container {
@@ -451,6 +479,8 @@
     </style>
   </head>
   <body>
+    <img id="websiteLogo" src="logo.jpg" alt="Website Logo" />
+
     <div id="menuOverlay">
       <h1
         style="
