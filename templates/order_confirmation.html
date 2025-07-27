@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %}Xác nhận Đơn hàng - Cửa hàng Demo{%
+endblock %} {% block content %}
+<h1>Đơn hàng đã được đặt thành công!</h1>
+<p>Mã đơn hàng của bạn là: <strong>#{{ order.id }}</strong></p>
+<p>Tổng tiền: <strong>{{ order.total_amount | int }} VNĐ</strong></p>
+<p>Ngày đặt: {{ order.order_date }}</p>
+
+<h2>Chi tiết đơn hàng:</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Sản phẩm</th>
+      <th>Giá</th>
+      <th>Số lượng</th>
+      <th>Tổng cộng</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in order_items %}
+    <tr>
+      <td>{{ item.product_name }}</td>
+      <td>{{ item.price | int }} VNĐ</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.quantity * item.price | int }} VNĐ</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p><a href="{{ url_for('index') }}" class="button">Tiếp tục mua sắm</a></p>
+{% endblock %}

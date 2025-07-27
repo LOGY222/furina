@@ -1,0 +1,13 @@
+{% extends "base.html" %} {% block title %}{{ product.name }} - Cửa hàng Demo{%
+endblock %} {% block content %}
+<div class="product-detail">
+  <img src="{{ product.image_url }}" alt="{{ product.name }}" />
+  <h2>{{ product.name }}</h2>
+  <p class="price">{{ product.price | int }} VNĐ</p>
+  <p>{{ product.description }}</p>
+  <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="button"
+    >Thêm vào giỏ</a
+  >
+  <p><a href="{{ url_for('index') }}">Quay lại danh sách sản phẩm</a></p>
+</div>
+{% endblock %}

@@ -1,8 +1,0 @@
-hello (hé-lô) = xin chào
-thank (thanh) = cảm ơn
-goodbye ( gút-bai) = tạm biệt
-yes ( yét ) = vâng/có
-no (no) = không
-excuse me  (ịt-cưu-mi) = xin thứ lỗi (....) 
-me (mi) = tôi
- I'd like to order (ai-lai-tu-o-đờ) = tôi muốn gọi món
